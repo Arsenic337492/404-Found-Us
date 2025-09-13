@@ -34,31 +34,52 @@
             <p>Этот сайт позволяет загружать фото и получать результаты распознавания объектов с помощью нейронной сети YOLO. Просто выберите или перетащите изображение, и результат появится ниже.</p>
         </div>
 
-        <!-- Модальное окно авторизации: телефон (OTP) + Google OAuth -->
+        <!-- Модальное окно авторизации (обновлённое) -->
         <div id="auth-modal" class="modal" aria-hidden="true">
-            <div class="modal-content">
-                <span class="close" id="auth-modal-close" aria-label="Закрыть">&times;</span>
-                <h2>Вход / Регистрация</h2>
+            <div class="modal-content auth-modal-small" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+                <button class="close" id="auth-modal-close" aria-label="Закрыть">&times;</button>
+                <div class="auth-box">
+                    <div class="auth-brand">
+                        <!-- Небольшой логотип/иконка -->
+                        <div class="logo">IN</div>
+                        <h2 id="auth-title">Вход в Indrive</h2>
+                        <p class="hint">Войдите по номеру телефона или через Google</p>
+                    </div>
 
-                <!-- Телефонный вход -->
-                <label for="auth-phone">Номер телефона (в формате +71234567890)</label>
-                <input type="tel" id="auth-phone" placeholder="+7..." inputmode="tel" autocomplete="tel">
+                    <!-- STEP 1: ввод телефона -->
+                    <div id="auth-step-phone" class="auth-step">
+                        <label for="auth-phone" class="visually-hidden">Номер телефона</label>
+                        <div class="phone-row">
+                            <select id="auth-phone-code" aria-label="Код страны">
+                                <option value="+7">+7</option>
+                                <option value="+1">+1</option>
+                                <option value="+44">+44</option>
+                                <!-- можно добавить другие коды -->
+                            </select>
+                            <input type="tel" id="auth-phone" inputmode="tel" placeholder="9 123 4567" autocomplete="tel" />
+                        </div>
+                        <button type="button" id="send-otp-btn" class="primary">Отправить код</button>
+                        <div class="or-sep"><span>или</span></div>
+                        <button type="button" id="google-btn" class="oauth-btn">Войти через Google</button>
+                        <div id="auth-message" role="status" aria-live="polite"></div>
+                    </div>
 
-                <button type="button" id="send-otp-btn">Отправить код (SMS)</button>
-
-                <!-- Поле для ввода кода, скрыто по умолчанию -->
-                <div id="otp-block" style="display:none; margin-top:8px;">
-                    <label for="auth-otp">Код из SMS</label>
-                    <input type="text" id="auth-otp" placeholder="123456" inputmode="numeric" maxlength="10">
-                    <button type="button" id="verify-otp-btn">Подтвердить код</button>
+                    <!-- STEP 2: ввод OTP -->
+                    <div id="auth-step-otp" class="auth-step" style="display:none;">
+                        <p class="otp-note">Код отправлен на <span id="otp-target"></span></p>
+                        <label for="auth-otp" class="visually-hidden">Код из SMS</label>
+                        <input type="text" id="auth-otp" inputmode="numeric" maxlength="6" placeholder="Введите код" />
+                        <div class="otp-actions">
+                            <button type="button" id="verify-otp-btn" class="primary">Подтвердить код</button>
+                            <button type="button" id="change-number-btn" class="link-btn">Изменить номер</button>
+                        </div>
+                        <div class="resend-row">
+                            <button type="button" id="resend-otp-btn" class="link-btn" disabled>Отправить код повторно</button>
+                            <span id="resend-timer" class="timer"></span>
+                        </div>
+                        <div id="auth-message-otp" role="status" aria-live="polite"></div>
+                    </div>
                 </div>
-
-                <hr style="margin:12px 0;">
-
-                <!-- OAuth Google -->
-                <button type="button" id="google-btn" class="oauth-btn">Войти через Google</button>
-
-                <div id="auth-message" role="status" aria-live="polite"></div>
             </div>
         </div>
     </main>
