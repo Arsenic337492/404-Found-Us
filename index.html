@@ -9,6 +9,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
 </head>
 <body>
+    <nav id="navbar">
+        <span class="nav-title">Decentrathon Indrive YOLO Demo</span>
+        <button id="nav-login-btn">Войти</button>
+        <span id="nav-user" style="display:none;"></span>
+        <button id="nav-logout-btn" style="display:none;">Выйти</button>
+    </nav>
     <header>
         <h1>Decentrathon Indrive YOLO Demo</h1>
         <p>Загрузите фото для распознавания объектов (YOLO)</p>
@@ -36,6 +42,20 @@
         </div>
         <div id="description">
             <p>Этот сайт позволяет загружать фото и получать результаты распознавания объектов с помощью нейронной сети YOLO. Просто выберите или перетащите изображение, и результат появится ниже.</p>
+        </div>
+        <!-- Модальное окно авторизации -->
+        <div id="auth-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="auth-modal-close">&times;</span>
+                <form id="auth-form">
+                    <h2>Вход / Регистрация</h2>
+                    <input type="email" id="auth-email" placeholder="Email" required>
+                    <input type="password" id="auth-password" placeholder="Пароль" required>
+                    <button type="submit" id="login-btn">Войти</button>
+                    <button type="button" id="register-btn">Регистрация</button>
+                </form>
+                <div id="auth-message"></div>
+            </div>
         </div>
     </main>
     <script src="main.js"></script>
