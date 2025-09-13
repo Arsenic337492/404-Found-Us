@@ -76,6 +76,34 @@ main {
     font-size: 0.95em;
     color: #555;
 }
+#auth-section {
+    margin-bottom: 25px;
+    text-align: center;
+}
+#auth-form input {
+    margin: 5px;
+    padding: 7px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 140px;
+}
+#auth-form button, #logout-btn {
+    margin: 5px;
+    padding: 7px 16px;
+    border-radius: 4px;
+    border: none;
+    background: #3399ff;
+    color: #fff;
+    cursor: pointer;
+}
+#auth-form button:hover, #logout-btn:hover {
+    background: #222;
+}
+#auth-message {
+    margin-top: 10px;
+    color: #d33;
+    font-size: 0.95em;
+}
 @media (max-width: 600px) {
     main {
         max-width: 98vw;
