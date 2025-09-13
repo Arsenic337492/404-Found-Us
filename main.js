@@ -1,138 +1,63 @@
-const photoInput = document.getElementById('photo-input');
-const preview = document.getElementById('preview');
-const result = document.getElementById('result');
-const dropZone = document.getElementById('drop-zone');
-const clearBtn = document.getElementById('clear-btn');
-const spinner = document.getElementById('spinner');
-
-const MAX_SIZE_MB = 5;
-
-function showSpinner(show) {
-    spinner.style.display = show ? 'block' : 'none';
-}
-
-function validateFile(file) {
-    if (!file.type.startsWith('image/')) {
-        result.textContent = 'Ошибка: можно загружать только изображения.';
-        return false;
-    }
-    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-        result.textContent = `Ошибка: максимальный размер файла — ${MAX_SIZE_MB} МБ.`;
-        return false;
-    }
-    return true;
-}
-
-function showPreview(file) {
-    preview.innerHTML = '';
-    result.textContent = '';
-    if (!validateFile(file)) return;
-    const img = document.createElement('img');
-    img.src = URL.createObjectURL(file);
-    img.onload = () => URL.revokeObjectURL(img.src);
-    preview.appendChild(img);
-    clearBtn.style.display = 'inline-block';
-    // Здесь можно показать спиннер, если отправляем на сервер
-    // showSpinner(true);
-    // setTimeout(() => { showSpinner(false); result.textContent = 'Результат появится здесь.'; }, 1200);
-}
-
-photoInput.addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) showPreview(file);
-});
-
-clearBtn.addEventListener('click', function() {
-    photoInput.value = '';
-    preview.innerHTML = '';
-    result.textContent = '';
-    clearBtn.style.display = 'none';
-});
-
-dropZone.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    dropZone.classList.add('dragover');
-});
-
-dropZone.addEventListener('dragleave', function(e) {
-    dropZone.classList.remove('dragover');
-});
-
-dropZone.addEventListener('drop', function(e) {
-    e.preventDefault();
-    dropZone.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file) {
-        photoInput.value = '';
-        showPreview(file);
-    }
-});
-
-// Tooltip для drop-zone
-dropZone.addEventListener('mouseenter', () => {
-    dropZone.title = 'Перетащите изображение или выберите файл выше';
-});
-dropZone.addEventListener('mouseleave', () => {
-    dropZone.title = 'Перетащите изображение сюда';
-});
-
-// Supabase config
-const SUPABASE_URL = "https://clpvctamagdfrmgswdta.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNscHZjdGFtYWdkZnJtZ3N3ZHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3NDgwNTEsImV4cCI6MjA3MzMyNDA1MX0.7gpiGlT6B5LOtnRcasA8sbmnTWI2ZBJcZb66lxQg4gQ";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-const authForm = document.getElementById('auth-form');
-const loginBtn = document.getElementById('login-btn');
-const registerBtn = document.getElementById('register-btn');
-const logoutBtn = document.getElementById('logout-btn');
-const authMessage = document.getElementById('auth-message');
-const authSection = document.getElementById('auth-section');
-
-// Проверка авторизации при загрузке
-async function checkAuth() {
-    const { data: { user } } = await supabase.auth.getUser();
-    updateAuthUI(user);
-}
-
-function updateAuthUI(user) {
-    if (user) {
-        authForm.style.display = 'none';
-        logoutBtn.style.display = 'inline-block';
-        authMessage.textContent = `Вошли как: ${user.email}`;
-    } else {
-        authForm.style.display = 'block';
-        logoutBtn.style.display = 'none';
-        authMessage.textContent = '';
-    }
-}
-
-authForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const email = document.getElementById('auth-email').value;
-    const password = document.getElementById('auth-password').value;
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-        authMessage.textContent = 'Ошибка входа: ' + error.message;
-    } else {
-        checkAuth();
-    }
-});
-
-registerBtn.addEventListener('click', async function() {
-    const email = document.getElementById('auth-email').value;
-    const password = document.getElementById('auth-password').value;
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-        authMessage.textContent = 'Ошибка регистрации: ' + error.message;
-    } else {
-        authMessage.textContent = 'Регистрация успешна! Проверьте почту для подтверждения.';
-    }
-});
-
-logoutBtn.addEventListener('click', async function() {
-    await supabase.auth.signOut();
-    checkAuth();
-});
-
-// Проверить статус при загрузке страницы
-checkAuth();
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Decentrathon Indrive YOLO Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <nav id="navbar">
+        <span class="nav-title">Decentrathon Indrive YOLO Demo</span>
+        <button id="nav-login-btn">Войти</button>
+        <span id="nav-user" style="display:none;"></span>
+        <button id="nav-logout-btn" style="display:none;">Выйти</button>
+    </nav>
+    <header>
+        <h1>Decentrathon Indrive YOLO Demo</h1>
+        <p>Загрузите фото для распознавания объектов (YOLO)</p>
+    </header>
+    <main>
+        <div id="auth-section">
+            <form id="auth-form">
+                <input type="email" id="auth-email" placeholder="Email" required>
+                <input type="password" id="auth-password" placeholder="Пароль" required>
+                <button type="submit" id="login-btn">Войти</button>
+                <button type="button" id="register-btn">Регистрация</button>
+            </form>
+            <button type="button" id="logout-btn" style="display:none;">Выйти</button>
+            <div id="auth-message"></div>
+        </div>
+        <form id="upload-form">
+            <input type="file" id="photo-input" accept="image/*" title="Выберите изображение для загрузки">
+            <button type="button" id="clear-btn" style="display:none;">Очистить</button>
+        </form>
+        <div id="drop-zone" title="Перетащите изображение сюда">или перетащите изображение сюда</div>
+        <div id="preview"></div>
+        <div id="result"></div>
+        <div id="spinner" style="display:none;">
+            <span>Загрузка...</span>
+        </div>
+        <div id="description">
+            <p>Этот сайт позволяет загружать фото и получать результаты распознавания объектов с помощью нейронной сети YOLO. Просто выберите или перетащите изображение, и результат появится ниже.</p>
+        </div>
+        <!-- Модальное окно авторизации -->
+        <div id="auth-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="auth-modal-close">&times;</span>
+                <form id="auth-form">
+                    <h2>Вход / Регистрация</h2>
+                    <input type="email" id="auth-email" placeholder="Email" required>
+                    <input type="password" id="auth-password" placeholder="Пароль" required>
+                    <button type="submit" id="login-btn">Войти</button>
+                    <button type="button" id="register-btn">Регистрация</button>
+                </form>
+                <div id="auth-message"></div>
+            </div>
+        </div>
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>
