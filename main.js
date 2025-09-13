@@ -75,3 +75,64 @@ dropZone.addEventListener('mouseenter', () => {
 dropZone.addEventListener('mouseleave', () => {
     dropZone.title = 'Перетащите изображение сюда';
 });
+
+// Supabase config
+const SUPABASE_URL = "https://clpvctamagdfrmgswdta.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNscHZjdGFtYWdkZnJtZ3N3ZHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3NDgwNTEsImV4cCI6MjA3MzMyNDA1MX0.7gpiGlT6B5LOtnRcasA8sbmnTWI2ZBJcZb66lxQg4gQ";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const authForm = document.getElementById('auth-form');
+const loginBtn = document.getElementById('login-btn');
+const registerBtn = document.getElementById('register-btn');
+const logoutBtn = document.getElementById('logout-btn');
+const authMessage = document.getElementById('auth-message');
+const authSection = document.getElementById('auth-section');
+
+// Проверка авторизации при загрузке
+async function checkAuth() {
+    const { data: { user } } = await supabase.auth.getUser();
+    updateAuthUI(user);
+}
+
+function updateAuthUI(user) {
+    if (user) {
+        authForm.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+        authMessage.textContent = `Вошли как: ${user.email}`;
+    } else {
+        authForm.style.display = 'block';
+        logoutBtn.style.display = 'none';
+        authMessage.textContent = '';
+    }
+}
+
+authForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+        authMessage.textContent = 'Ошибка входа: ' + error.message;
+    } else {
+        checkAuth();
+    }
+});
+
+registerBtn.addEventListener('click', async function() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+        authMessage.textContent = 'Ошибка регистрации: ' + error.message;
+    } else {
+        authMessage.textContent = 'Регистрация успешна! Проверьте почту для подтверждения.';
+    }
+});
+
+logoutBtn.addEventListener('click', async function() {
+    await supabase.auth.signOut();
+    checkAuth();
+});
+
+// Проверить статус при загрузке страницы
+checkAuth();
