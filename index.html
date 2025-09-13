@@ -20,16 +20,6 @@
         <p>Загрузите фото для распознавания объектов (YOLO)</p>
     </header>
     <main>
-        <div id="auth-section">
-            <form id="auth-form">
-                <input type="email" id="auth-email" placeholder="Email" required>
-                <input type="password" id="auth-password" placeholder="Пароль" required>
-                <button type="submit" id="login-btn">Войти</button>
-                <button type="button" id="register-btn">Регистрация</button>
-            </form>
-            <button type="button" id="logout-btn" style="display:none;">Выйти</button>
-            <div id="auth-message"></div>
-        </div>
         <form id="upload-form">
             <input type="file" id="photo-input" accept="image/*" title="Выберите изображение для загрузки">
             <button type="button" id="clear-btn" style="display:none;">Очистить</button>
@@ -51,6 +41,16 @@
                     <h2>Вход / Регистрация</h2>
                     <input type="email" id="auth-email" placeholder="Email" required>
                     <input type="password" id="auth-password" placeholder="Пароль" required>
+                    <button type="submit" id="login-btn">Войти</button>
+                    <button type="button" id="register-btn">Регистрация</button>
+                </form>
+                <div id="auth-message"></div>
+            </div>
+        </div>
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>
                     <button type="submit" id="login-btn">Войти</button>
                     <button type="button" id="register-btn">Регистрация</button>
                 </form>
