@@ -81,120 +81,178 @@ const SUPABASE_URL = "https://clpvctamagdfrmgswdta.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNscHZjdGFtYWdkZnJtZ3N3ZHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3NDgwNTEsImV4cCI6MjA3MzMyNDA1MX0.7gpiGlT6B5LOtnRcasA8sbmnTWI2ZBJcZb66lxQg4gQ";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Навигация и модальное окно элементы (добавлены новые элементы для OTP/Google)
+// Новые элементы (auth modal)
+const authModal = document.getElementById('auth-modal');
+const authModalClose = document.getElementById('auth-modal-close');
 const navLoginBtn = document.getElementById('nav-login-btn');
 const navLogoutBtn = document.getElementById('nav-logout-btn');
 const navUser = document.getElementById('nav-user');
-const authModal = document.getElementById('auth-modal');
-const authModalClose = document.getElementById('auth-modal-close');
 
-const sendOtpBtn = document.getElementById('send-otp-btn');
-const verifyOtpBtn = document.getElementById('verify-otp-btn');
+const phoneCodeSelect = document.getElementById('auth-phone-code');
 const authPhone = document.getElementById('auth-phone');
-const authOtp = document.getElementById('auth-otp');
-const otpBlock = document.getElementById('otp-block');
-const googleBtn = document.getElementById('google-btn');
-const authMessage = document.getElementById('auth-message');
+const sendOtpBtn = document.getElementById('send-otp-btn');
 
-// Открыть/закрыть модал
-navLoginBtn.addEventListener('click', () => {
+const stepPhone = document.getElementById('auth-step-phone');
+const stepOtp = document.getElementById('auth-step-otp');
+const otpTarget = document.getElementById('otp-target');
+const authOtp = document.getElementById('auth-otp');
+const verifyOtpBtn = document.getElementById('verify-otp-btn');
+const changeNumberBtn = document.getElementById('change-number-btn');
+const resendOtpBtn = document.getElementById('resend-otp-btn');
+const resendTimerEl = document.getElementById('resend-timer');
+const googleBtn = document.getElementById('google-btn');
+
+const authMessageMain = document.getElementById('auth-message');
+const authMessageOtp = document.getElementById('auth-message-otp');
+
+let resendTimer = null;
+let resendSeconds = 0;
+
+function openAuth() {
     authModal.style.display = 'block';
     authModal.setAttribute('aria-hidden', 'false');
-});
-authModalClose.addEventListener('click', () => {
+    stepPhone.style.display = 'block';
+    stepOtp.style.display = 'none';
+    authMessageMain.textContent = '';
+    authMessageOtp.textContent = '';
+    authPhone.focus();
+}
+
+function closeAuth() {
     authModal.style.display = 'none';
     authModal.setAttribute('aria-hidden', 'true');
-    clearAuthUI();
-});
-window.addEventListener('click', (e) => {
-    if (e.target === authModal) {
-        authModal.style.display = 'none';
-        authModal.setAttribute('aria-hidden', 'true');
-        clearAuthUI();
-    }
-});
+    clearAuthState();
+}
 
-function clearAuthUI() {
-    authMessage.textContent = '';
+function clearAuthState() {
     authPhone.value = '';
     authOtp.value = '';
-    otpBlock.style.display = 'none';
+    otpTarget.textContent = '';
+    stopResendTimer();
+    resendOtpBtn.disabled = true;
+    resendTimerEl.textContent = '';
+    authMessageMain.textContent = '';
+    authMessageOtp.textContent = '';
 }
 
-// Проверка авторизации при загрузке
-async function checkAuth() {
-    const { data: { user } } = await supabase.auth.getUser();
-    updateAuthUI(user);
-}
+navLoginBtn.addEventListener('click', openAuth);
+authModalClose.addEventListener('click', closeAuth);
+window.addEventListener('click', (e) => { if (e.target === authModal) closeAuth(); });
 
-function updateAuthUI(user) {
-    if (user) {
-        navLoginBtn.style.display = 'none';
-        navUser.style.display = 'inline-block';
-        navUser.textContent = user.email || user.phone || 'Профиль';
-        navLogoutBtn.style.display = 'inline-block';
-        authModal.style.display = 'none';
-        authModal.setAttribute('aria-hidden', 'true');
-        clearAuthUI();
+// Start resend timer (60s)
+function startResendTimer(sec = 60) {
+    resendSeconds = sec;
+    resendOtpBtn.disabled = true;
+    updateResendUI();
+    resendTimer = setInterval(() => {
+        resendSeconds--;
+        updateResendUI();
+        if (resendSeconds <= 0) stopResendTimer();
+    }, 1000);
+}
+function updateResendUI() {
+    if (resendSeconds > 0) {
+        resendTimerEl.textContent = `через ${resendSeconds}s`;
+        resendOtpBtn.disabled = true;
     } else {
-        navLoginBtn.style.display = 'inline-block';
-        navUser.style.display = 'none';
-        navUser.textContent = '';
-        navLogoutBtn.style.display = 'none';
+        resendTimerEl.textContent = '';
+        resendOtpBtn.disabled = false;
     }
 }
+function stopResendTimer() {
+    if (resendTimer) { clearInterval(resendTimer); resendTimer = null; }
+    resendSeconds = 0;
+    updateResendUI();
+}
 
-// Отправка OTP на телефон
+// Объединить код страны и номер в E.164-ish (пользовательский ввод минимально обработан)
+function buildPhoneE164() {
+    const code = (phoneCodeSelect.value || '+7').trim();
+    let phone = (authPhone.value || '').replace(/\D/g, '');
+    // если пользователь ввёл полный номер (с ведущим 8/7), не дублируем
+    if (phone.startsWith('8') && code === '+7') phone = phone.slice(1);
+    return code + phone;
+}
+
+// Отправка OTP
 sendOtpBtn.addEventListener('click', async () => {
-    const phone = authPhone.value.trim();
-    authMessage.textContent = '';
-    if (!phone || !/^\+\d{7,15}$/.test(phone)) {
-        authMessage.textContent = 'Введите корректный номер в международном формате, например +71234567890';
+    authMessageMain.textContent = '';
+    const fullPhone = buildPhoneE164();
+    if (!/^\+\d{7,15}$/.test(fullPhone)) {
+        authMessageMain.textContent = 'Введите корректный номер в международном формате.';
         return;
     }
-    authMessage.textContent = 'Отправка кода...';
-    const { error } = await supabase.auth.signInWithOtp({ phone });
+    sendOtpBtn.disabled = true;
+    authMessageMain.textContent = 'Отправка кода...';
+    const { error } = await supabase.auth.signInWithOtp({ phone: fullPhone });
+    sendOtpBtn.disabled = false;
     if (error) {
-        authMessage.textContent = 'Ошибка отправки кода: ' + error.message;
+        authMessageMain.textContent = 'Ошибка отправки: ' + error.message;
     } else {
-        authMessage.textContent = 'Код отправлен. Введите код из SMS.';
-        otpBlock.style.display = 'block';
+        // Переходим к шагу ввода OTP
+        otpTarget.textContent = fullPhone;
+        stepPhone.style.display = 'none';
+        stepOtp.style.display = 'block';
+        authOtp.focus();
+        authMessageMain.textContent = '';
+        authMessageOtp.textContent = 'Код отправлен.';
+        startResendTimer(60);
     }
+});
+
+// Повторная отправка (resend)
+resendOtpBtn.addEventListener('click', async () => {
+    resendOtpBtn.disabled = true;
+    authMessageOtp.textContent = 'Повторная отправка...';
+    const fullPhone = buildPhoneE164();
+    const { error } = await supabase.auth.signInWithOtp({ phone: fullPhone });
+    if (error) {
+        authMessageOtp.textContent = 'Ошибка отправки: ' + error.message;
+    } else {
+        authMessageOtp.textContent = 'Код отправлен повторно.';
+        startResendTimer(60);
+    }
+});
+
+// Изменить номер
+changeNumberBtn.addEventListener('click', () => {
+    stepOtp.style.display = 'none';
+    stepPhone.style.display = 'block';
+    clearAuthState();
 });
 
 // Подтверждение OTP
 verifyOtpBtn.addEventListener('click', async () => {
-    const phone = authPhone.value.trim();
+    authMessageOtp.textContent = '';
     const token = authOtp.value.trim();
-    authMessage.textContent = '';
-    if (!token) {
-        authMessage.textContent = 'Введите код из SMS.';
-        return;
-    }
-    authMessage.textContent = 'Проверка кода...';
+    const phone = buildPhoneE164();
+    if (!token) { authMessageOtp.textContent = 'Введите код из SMS.'; return; }
+    verifyOtpBtn.disabled = true;
+    authMessageOtp.textContent = 'Проверка кода...';
     const { error } = await supabase.auth.verifyOtp({ phone, token, type: 'sms' });
+    verifyOtpBtn.disabled = false;
     if (error) {
-        authMessage.textContent = 'Ошибка подтверждения: ' + error.message;
+        authMessageOtp.textContent = 'Ошибка подтверждения: ' + error.message;
     } else {
-        authMessage.textContent = 'Успешно! Вы вошли.';
-        await checkAuth();
+        authMessageOtp.textContent = 'Успешно! Вы вошли.';
+        await checkAuth(); // обновит navbar
+        closeAuth();
     }
 });
 
-// Вход через Google OAuth
+// Google OAuth (использует redirect по дефолту)
 googleBtn.addEventListener('click', async () => {
-    authMessage.textContent = '';
+    authMessageMain.textContent = '';
     await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: window.location.origin }
     });
 });
 
-// Выход
-navLogoutBtn.addEventListener('click', async function() {
+// Привязка выхода и первичная проверка
+navLogoutBtn.addEventListener('click', async () => {
     await supabase.auth.signOut();
     checkAuth();
 });
 
-// Инициалная проверка
 checkAuth();
