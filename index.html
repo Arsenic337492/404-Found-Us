@@ -1,67 +1,65 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<meta charset="utf-8" />
-	<title>InCheck — главная</title>
-	<meta name="viewport" content="width=device-width,initial-scale=1" />
-	<link rel="stylesheet" href="style.css">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>InCheck — распознавание изображений</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-	<nav id="navbar" class="nav-branding">
-		<div class="brand">
-			<a href="index.html" class="brand-link" aria-label="InCheck — главная">
-				<div class="logo-circle" aria-hidden="true">IC</div>
-				<span class="brand-title">InCheck</span>
-			</a>
-		</div>
-		<div class="nav-actions">
-			<a href="in-check.html" class="btn-login">Вход</a>
-		</div>
-	</nav>
+    <!-- ...existing code... (navbar etc.) -->
+    <nav id="navbar" class="nav-branding">
+        <div class="brand" aria-label="InCheck">
+            <div class="logo-circle" aria-hidden="true">IC</div>
+            <span class="brand-title">InCheck</span>
+        </div>
+        <div class="nav-actions">
+            <button id="nav-login-btn" class="btn-login">Войти</button>
+            <span id="nav-user" style="display:none;"></span>
+            <button id="nav-logout-btn" style="display:none;">Выйти</button>
+        </div>
+    </nav>
 
-	<main class="site-main">
-		<!-- Hero — фон задаётся в CSS, текст поверх затемнения -->
-		<section class="hero">
-			<div class="hero-inner">
-				<h1>Аналитика и распознавание изображений для Decentrathon</h1>
-				<p>Быстрая проверка фото с последующим распознаванием объектов. Нажмите «Начать» чтобы перейти к инструменту распознавания.</p>
-				<a href="in-check.html" class="primary hero-cta">Начать</a>
-			</div>
-		</section>
+    <main>
+        <!-- upload form / preview / auth modal (тот же функционал, перенесён сюда) -->
+        <form id="upload-form">
+            <input type="file" id="photo-input" accept="image/*" title="Выберите изображение для загрузки">
+            <button type="button" id="clear-btn" style="display:none;">Очистить</button>
+        </form>
 
-		<section class="stats">
-			<h3>Статистика</h3>
-			<div class="stats-grid">
-				<div class="stat-card">
-					<div class="stat-value">1,234</div>
-					<div class="stat-label">Обработанных фото</div>
-				</div>
-				<div class="stat-card">
-					<div class="stat-value">98%</div>
-					<div class="stat-label">Точность (оценочно)</div>
-				</div>
-			</div>
-		</section>
+        <div id="drop-zone" title="Перетащите изображение сюда">или перетащите изображение сюда</div>
+        <div id="preview"></div>
+        <div id="result"></div>
+        <div id="spinner" style="display:none;"><span>Загрузка...</span></div>
 
-		<section class="support">
-			<h3>Создано при поддержке</h3>
-			<p>InDrive — технологии и поддержка.</p>
-			<a href="https://indrive.com" target="_blank" rel="noopener" class="link-btn">Перейти на сайт InDrive</a>
-		</section>
-	</main>
+        <!-- Описание -->
+        <div id="description">
+            <p>Этот сервис делает превью и подготовку изображения для отправки в модель YOLO. Используйте кнопку «Войти», чтобы открыть модальное окно авторизации.</p>
+        </div>
 
-	<script src="main.js"></script>
-</body>
-</html>
+        <!-- Модальное окно авторизации (обновлённое) -->
+        <div id="auth-modal" class="modal" aria-hidden="true">
+            <div class="modal-content auth-modal-small" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+                <button class="close" id="auth-modal-close" aria-label="Закрыть">&times;</button>
+                <div class="auth-box">
+                    <div class="auth-brand">
+                        <div class="logo">IN</div>
+                        <h2 id="auth-title">Вход в Indrive</h2>
+                        <p class="hint">Войдите по номеру телефона или через Google</p>
+                    </div>
+
+                    <div id="auth-step-phone" class="auth-step">
+                        <label for="auth-phone" class="visually-hidden">Номер телефона</label>
                         <div class="phone-row">
                             <span id="auth-phone-flag" aria-hidden="true">🇷🇺</span>
                             <select id="auth-phone-code" aria-label="Код страны">
                                 <option value="+7">+7</option>
                                 <option value="+1">+1</option>
                                 <option value="+44">+44</option>
-                                <!-- можно добавить другие коды -->
                             </select>
                             <input type="tel" id="auth-phone" inputmode="tel" placeholder="9 123 4567" autocomplete="tel" />
                         </div>
@@ -69,19 +67,16 @@
 
                         <div class="or-sep"><span>или</span></div>
 
-                        <!-- Email fallback -->
                         <div class="email-row" style="margin-bottom:8px;">
                             <input type="email" id="auth-email" placeholder="Email для быстрой авторизации (альтернатива SMS)"/>
                         </div>
                         <button type="button" id="send-magic-btn" class="primary" style="background:#2b6cb0;margin-bottom:6px;">Отправить ссылку (Email)</button>
 
                         <button type="button" id="google-btn" class="oauth-btn">Войти через Google</button>
-
                         <div id="provider-help" style="margin-top:8px;color:#a00;display:none;font-size:0.92em;"></div>
                         <div id="auth-message" role="status" aria-live="polite"></div>
                     </div>
 
-                    <!-- STEP 2: ввод OTP -->
                     <div id="auth-step-otp" class="auth-step" style="display:none;">
                         <p class="otp-note">Код отправлен на <span id="otp-target"></span></p>
                         <label for="auth-otp" class="visually-hidden">Код из SMS</label>
@@ -100,10 +95,7 @@
             </div>
         </div>
     </main>
-    <script src="main.js"></script>
-</body>
-</html>
-    </main>
+
     <script src="main.js"></script>
 </body>
 </html>
