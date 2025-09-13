@@ -196,11 +196,29 @@ main {
 
 /* phone input row */
 .phone-row { display:flex; gap:8px; align-items:center; }
+#auth-phone-flag {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:34px;
+    height:24px;
+    font-size:18px;
+    line-height:1;
+    border-radius:4px;
+}
 #auth-phone-code {
     width:86px; padding:8px; border-radius:8px; border:1px solid #ddd; background:#fafafa;
 }
+/* чуть меньший селект на мобильных */
+@media (max-width:420px) {
+    #auth-phone-flag { width:28px; height:20px; font-size:14px; }
+    #auth-phone-code { width:74px; }
+}
+/* форматированный ввод номера: моноширинный и немного увеличенный */
 #auth-phone {
     flex:1; padding:10px; border-radius:8px; border:1px solid #ddd;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace;
+    letter-spacing: 0.6px;
 }
 
 /* buttons */
