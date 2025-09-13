@@ -275,3 +275,73 @@ main {
 
 /* подсказка про провайдера */
 #provider-help { font-size:0.92em; color:#a00; }
+
+/* Branding navbar (InCheck ~ стиль InDrive-like) */
+.nav-branding {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 20px;
+	background: linear-gradient(180deg,#0f1720,#0b0f14);
+	box-shadow: 0 2px 8px rgba(2,6,23,0.5);
+	color: #fff;
+	font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Brand left */
+.brand {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+.logo-circle {
+	width: 44px;
+	height: 44px;
+	border-radius: 10px;
+	background: linear-gradient(135deg,#00c853 0%, #00a86b 100%); /* зелёный градиент, InDrive-like */
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+	font-size: 1.05rem;
+	color: #fff;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.brand-title {
+	font-weight: 700;
+	font-size: 1.05rem;
+	letter-spacing: 0.2px;
+	color: #ffffff;
+}
+
+/* Right actions */
+.nav-actions {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+/* Primary login button styled like InDrive action */
+.btn-login {
+	background: linear-gradient(180deg,#00c853,#00a86b);
+	color: #fff;
+	border: none;
+	padding: 8px 14px;
+	border-radius: 10px;
+	font-weight: 600;
+	cursor: pointer;
+	box-shadow: 0 6px 18px rgba(0,168,107,0.18);
+	transition: transform .08s ease, box-shadow .12s ease, opacity .08s;
+}
+.btn-login:hover { transform: translateY(-1px); opacity: 0.98; }
+.btn-login:active { transform: translateY(0); }
+
+/* Ensure compatibility with previous #navbar rules: keep specificity */
+#navbar { background: transparent; box-shadow: none; }
+
+/* Responsive tweak */
+@media (max-width:600px) {
+	.brand-title { font-size: 1rem; }
+	.logo-circle { width:40px; height:40px; font-size:1rem; }
+	.btn-login { padding: 8px 12px; border-radius: 8px; }
+}
