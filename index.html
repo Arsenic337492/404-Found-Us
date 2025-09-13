@@ -10,51 +10,51 @@
 </head>
 <body>
 	<nav id="navbar" class="nav-branding">
-		<div class="brand" aria-label="InCheck">
-			<div class="logo-circle" aria-hidden="true">IC</div>
-			<span class="brand-title">InCheck</span>
+		<div class="brand">
+			<a href="index.html" class="brand-link" aria-label="InCheck — главная">
+				<div class="logo-circle" aria-hidden="true">IC</div>
+				<span class="brand-title">InCheck</span>
+			</a>
 		</div>
 		<div class="nav-actions">
-			<a href="in-check.html" class="btn-login">Начать</a>
+			<a href="in-check.html" class="btn-login">Вход</a>
 		</div>
 	</nav>
 
-	<header class="hero" style="padding:48px 20px; text-align:center;">
-		<div style="max-width:1000px;margin:0 auto;">
-			<img src="https://via.placeholder.com/1000x360?text=InCheck+Hero" alt="InCheck" style="width:100%;border-radius:12px;box-shadow:0 10px 30px rgba(9,20,30,0.06);">
-			<h1 style="margin-top:18px;font-size:1.6rem;color:var(--text);">Аналитика и распознавание изображений для Decentrathon</h1>
-			<p style="color:var(--muted);max-width:720px;margin:12px auto 20px;">Быстрая проверка фото с последующим распознаванием объектов. Нажмите «Начать» чтобы перейти к инструменту распознавания.</p>
-			<a href="in-check.html" class="primary" style="max-width:220px;display:inline-block;">Начать</a>
-		</div>
-	</header>
-
-	<section style="padding:30px 20px; text-align:center;">
-		<h3 style="margin-bottom:12px;">Статистика</h3>
-		<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-			<div style="background:var(--card);padding:18px;border-radius:12px;min-width:160px;box-shadow:var(--card-shadow);">
-				<div style="font-weight:700;font-size:1.25rem;">1,234</div>
-				<div style="color:var(--muted);font-size:0.9rem;">Обработанных фото</div>
+	<main class="site-main">
+		<!-- Hero — фон задаётся в CSS, текст поверх затемнения -->
+		<section class="hero">
+			<div class="hero-inner">
+				<h1>Аналитика и распознавание изображений для Decentrathon</h1>
+				<p>Быстрая проверка фото с последующим распознаванием объектов. Нажмите «Начать» чтобы перейти к инструменту распознавания.</p>
+				<a href="in-check.html" class="primary hero-cta">Начать</a>
 			</div>
-			<div style="background:var(--card);padding:18px;border-radius:12px;min-width:160px;box-shadow:var(--card-shadow);">
-				<div style="font-weight:700;font-size:1.25rem;">98%</div>
-				<div style="color:var(--muted);font-size:0.9rem;">Точность (оценочно)</div>
+		</section>
+
+		<section class="stats">
+			<h3>Статистика</h3>
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="stat-value">1,234</div>
+					<div class="stat-label">Обработанных фото</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-value">98%</div>
+					<div class="stat-label">Точность (оценочно)</div>
+				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
-	<section style="padding:18px 20px; text-align:center;">
-		<h3>Создано при поддержке</h3>
-		<p style="color:var(--muted);">InDrive — технологии и поддержка.</p>
-		<a href="https://indrive.com" target="_blank" rel="noopener" class="link-btn">Перейти на сайт InDrive</a>
-	</section>
-
-	<!-- footer и дополнительные секции отложены -->
+		<section class="support">
+			<h3>Создано при поддержке</h3>
+			<p>InDrive — технологии и поддержка.</p>
+			<a href="https://indrive.com" target="_blank" rel="noopener" class="link-btn">Перейти на сайт InDrive</a>
+		</section>
+	</main>
 
 	<script src="main.js"></script>
 </body>
 </html>
-                    <div id="auth-step-phone" class="auth-step">
-                        <label for="auth-phone" class="visually-hidden">Номер телефона</label>
                         <div class="phone-row">
                             <span id="auth-phone-flag" aria-hidden="true">🇷🇺</span>
                             <select id="auth-phone-code" aria-label="Код страны">
