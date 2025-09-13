@@ -1,57 +1,57 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Decentrathon Indrive YOLO Demo</title>
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Supabase JS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+	<meta charset="utf-8" />
+	<title>InCheck — главная</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav id="navbar" class="nav-branding">
-        <!-- изменённая левая часть: логотип + название -->
-        <div class="brand" aria-label="InCheck">
-            <div class="logo-circle" aria-hidden="true">IC</div>
-            <span class="brand-title">InCheck</span>
-        </div>
+	<nav id="navbar" class="nav-branding">
+		<div class="brand" aria-label="InCheck">
+			<div class="logo-circle" aria-hidden="true">IC</div>
+			<span class="brand-title">InCheck</span>
+		</div>
+		<div class="nav-actions">
+			<a href="in-check.html" class="btn-login">Начать</a>
+		</div>
+	</nav>
 
-        <!-- правая часть навбара (идентификаторы сохранены для JS) -->
-        <div class="nav-actions">
-            <button id="nav-login-btn" class="btn-login">Войти</button>
-            <span id="nav-user" style="display:none;"></span>
-            <button id="nav-logout-btn" style="display:none;">Выйти</button>
-        </div>
-    </nav>
-    <main>
-        <form id="upload-form">
-            <input type="file" id="photo-input" accept="image/*" title="Выберите изображение для загрузки">
-            <button type="button" id="clear-btn" style="display:none;">Очистить</button>
-        </form>
-        <div id="drop-zone" title="Перетащите изображение сюда">или перетащите изображение сюда</div>
-        <div id="preview"></div>
-        <div id="result"></div>
-        <div id="spinner" style="display:none;">
-            <span>Загрузка...</span>
-        </div>
-        <div id="description">
-            <p>Этот сайт позволяет загружать фото и получать результаты распознавания объектов с помощью нейронной сети YOLO. Просто выберите или перетащите изображение, и результат появится ниже.</p>
-        </div>
+	<header class="hero" style="padding:48px 20px; text-align:center;">
+		<div style="max-width:1000px;margin:0 auto;">
+			<img src="https://via.placeholder.com/1000x360?text=InCheck+Hero" alt="InCheck" style="width:100%;border-radius:12px;box-shadow:0 10px 30px rgba(9,20,30,0.06);">
+			<h1 style="margin-top:18px;font-size:1.6rem;color:var(--text);">Аналитика и распознавание изображений для Decentrathon</h1>
+			<p style="color:var(--muted);max-width:720px;margin:12px auto 20px;">Быстрая проверка фото с последующим распознаванием объектов. Нажмите «Начать» чтобы перейти к инструменту распознавания.</p>
+			<a href="in-check.html" class="primary" style="max-width:220px;display:inline-block;">Начать</a>
+		</div>
+	</header>
 
-        <!-- Модальное окно авторизации (обновлённое) -->
-        <div id="auth-modal" class="modal" aria-hidden="true">
-            <div class="modal-content auth-modal-small" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-                <button class="close" id="auth-modal-close" aria-label="Закрыть">&times;</button>
-                <div class="auth-box">
-                    <div class="auth-brand">
-                        <!-- Небольшой логотип/иконка -->
-                        <div class="logo">IN</div>
-                        <h2 id="auth-title">Вход в Indrive</h2>
-                        <p class="hint">Войдите по номеру телефона или через Google</p>
-                    </div>
+	<section style="padding:30px 20px; text-align:center;">
+		<h3 style="margin-bottom:12px;">Статистика</h3>
+		<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+			<div style="background:var(--card);padding:18px;border-radius:12px;min-width:160px;box-shadow:var(--card-shadow);">
+				<div style="font-weight:700;font-size:1.25rem;">1,234</div>
+				<div style="color:var(--muted);font-size:0.9rem;">Обработанных фото</div>
+			</div>
+			<div style="background:var(--card);padding:18px;border-radius:12px;min-width:160px;box-shadow:var(--card-shadow);">
+				<div style="font-weight:700;font-size:1.25rem;">98%</div>
+				<div style="color:var(--muted);font-size:0.9rem;">Точность (оценочно)</div>
+			</div>
+		</div>
+	</section>
 
+	<section style="padding:18px 20px; text-align:center;">
+		<h3>Создано при поддержке</h3>
+		<p style="color:var(--muted);">InDrive — технологии и поддержка.</p>
+		<a href="https://indrive.com" target="_blank" rel="noopener" class="link-btn">Перейти на сайт InDrive</a>
+	</section>
+
+	<!-- footer и дополнительные секции отложены -->
+
+</body>
+</html>
                     <!-- STEP 1: ввод телефона -->
                     <div id="auth-step-phone" class="auth-step">
                         <label for="auth-phone" class="visually-hidden">Номер телефона</label>
