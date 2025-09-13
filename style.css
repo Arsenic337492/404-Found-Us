@@ -1,3 +1,97 @@
+/* Override palette to requested colors */
+:root {
+	--brand-green: #32CD32;
+	--white: #ffffff;
+	--dark: #1a1a1a;
+}
+
+/* Navbar placed on top and content starts below it */
+.nav-branding {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 64px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 20px;
+	background: linear-gradient(180deg, rgba(26,26,26,0.95), rgba(26,26,26,0.9));
+	z-index: 100;
+	box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+}
+
+/* make brand-link inline and remove default anchor styles */
+.brand-link { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--white); }
+.brand-title { font-weight:700; color:var(--white); font-family:'Poppins',sans-serif; }
+
+/* Adjust main content to sit below fixed navbar */
+.site-main { margin-top: 80px; }
+
+/* Hero background: Unsplash road/city photo + dark gradient overlay for readability */
+.hero {
+	min-height: 420px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	text-align:center;
+	color:var(--white);
+	background-image:
+		linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+		url("https://images.unsplash.com/photo-1509395176047-4a66953fd231?w=1600&q=80&auto=format&fit=crop");
+	background-size:cover;
+	background-position:center;
+	border-radius: 12px;
+	margin: 20px;
+	box-shadow: 0 12px 40px rgba(2,6,23,0.25);
+}
+.hero-inner { max-width: 920px; padding: 48px 20px; }
+.hero h1 { font-size: 2rem; margin: 0 0 12px; color: #fff; text-shadow: 0 6px 24px rgba(0,0,0,0.4); }
+.hero p { color: rgba(255,255,255,0.88); margin-bottom: 18px; }
+
+/* CTA button style (green with white text; darken on hover) */
+.primary, .btn-login, .hero-cta {
+	background: linear-gradient(180deg, var(--brand-green), #28b428);
+	color: var(--white);
+	padding: 12px 18px;
+	border-radius: 12px;
+	text-decoration: none;
+	display: inline-block;
+	font-weight: 700;
+	box-shadow: 0 12px 30px rgba(50,205,50,0.12);
+	transition: transform .08s ease, filter .12s ease;
+}
+.primary:hover, .btn-login:hover, .hero-cta:hover {
+	filter: brightness(0.92);
+	transform: translateY(-2px);
+}
+
+/* Statistics cards styled like InDrive cards */
+.stats { padding: 28px 20px; text-align:center; }
+.stats-grid { display:flex; gap:18px; justify-content:center; flex-wrap:wrap; }
+.stat-card {
+	background: var(--white);
+	padding: 18px 22px;
+	border-radius: 12px;
+	min-width: 160px;
+	box-shadow: 0 12px 30px rgba(6,22,30,0.06);
+	color: var(--dark);
+}
+.stat-value { font-size: 1.4rem; font-weight:700; }
+.stat-label { color: var(--muted); font-size:0.9rem; }
+
+/* Support section */
+.support { padding: 18px 20px 48px; text-align:center; color:var(--dark); }
+
+/* Responsive: stack stats on small screens, reduce hero padding */
+@media (max-width: 768px) {
+	.hero { min-height: 360px; margin: 12px; border-radius: 10px; }
+	.hero h1 { font-size: 1.5rem; }
+	.stats-grid { flex-direction: column; align-items: center; }
+	.nav-branding { height:56px; padding:8px 12px; }
+	.site-main { margin-top: 72px; }
+}
+
 /* Palette and global refinements */
 :root{
 	--bg: #f3f5f6;
