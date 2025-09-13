@@ -165,31 +165,71 @@ function stopResendTimer() {
     updateResendUI();
 }
 
-// Объединить код страны и номер в E.164-ish (пользовательский ввод минимально обработан)
+// Объединить код страны и номер в E.164-ish (умнее, не дублируем код)
 function buildPhoneE164() {
-    const code = (phoneCodeSelect.value || '+7').trim();
-    let phone = (authPhone.value || '').replace(/\D/g, '');
-    // если пользователь ввёл полный номер (с ведущим 8/7), не дублируем
-    if (phone.startsWith('8') && code === '+7') phone = phone.slice(1);
+    const code = (phoneCodeSelect.value || '+7').trim(); // "+7"
+    const codeDigits = code.replace(/^\+/, ''); // "7"
+    let raw = (authPhone.value || '').trim();
+
+    // Если пользователь ввёл с ведущим '+', используем как есть (но очищаем лишние символы)
+    if (raw.startsWith('+')) {
+        const digits = raw.replace(/\D/g, '');
+        return '+' + digits;
+    }
+
+    // Убираем все не-цифры
+    let phone = raw.replace(/\D/g, '');
+
+    // Если пользователь ввёл полный номер с кодом (например "77077608153") и начало совпадает с кодом страны,
+    // считаем, что это уже полный e.164 без '+'
+    if (phone.startsWith(codeDigits)) {
+        return '+' + phone;
+    }
+
+    // Специальный случай: если ввели номер с ведущей 8 для РФ (+7), убираем 8
+    if (code === '+7' && phone.startsWith('8')) {
+        phone = phone.slice(1);
+    }
+
     return code + phone;
 }
 
-// Отправка OTP
+// Улучшенная проверка международного формата (принимает +digits или digits, но результат должен быть валидным e164)
+function isLikelyValidPhone(e164) {
+    // простой чек длины и знак +
+    return typeof e164 === 'string' && /^\+\d{7,15}$/.test(e164);
+}
+
+// Отправка OTP (с расширенной обработкой ошибок)
 sendOtpBtn.addEventListener('click', async () => {
     authMessageMain.textContent = '';
     const fullPhone = buildPhoneE164();
-    if (!/^\+\d{7,15}$/.test(fullPhone)) {
-        authMessageMain.textContent = 'Введите корректный номер в международном формате.';
+
+    if (!isLikelyValidPhone(fullPhone)) {
+        authMessageMain.textContent = 'Введите корректный номер в международном формате. Пример: +7 701 234 5678 или введите только местный номер и выберите код страны.';
         return;
     }
+
     sendOtpBtn.disabled = true;
     authMessageMain.textContent = 'Отправка кода...';
-    const { error } = await supabase.auth.signInWithOtp({ phone: fullPhone });
-    sendOtpBtn.disabled = false;
-    if (error) {
-        authMessageMain.textContent = 'Ошибка отправки: ' + error.message;
-    } else {
-        // Переходим к шагу ввода OTP
+    try {
+        const { error } = await supabase.auth.signInWithOtp({ phone: fullPhone });
+        sendOtpBtn.disabled = false;
+        if (error) {
+            // Специфичная обработка для провайдера SMS
+            const msg = (error.message || '').toString();
+            if (/unsupported phone provider|Unsupported phone provider/i.test(msg) || /provider/i.test(msg)) {
+                authMessageMain.innerHTML = 'Этот номер не поддерживается SMS-провайдером. Попробуйте войти через Google или используйте другой номер. Если проблема повторяется — свяжитесь с поддержкой.';
+                // дать визуальную подсказку: показать кнопку Google явно
+                // (кнопка уже есть в модалке, можно сфокусировать на ней)
+                googleBtn.focus();
+                return;
+            }
+            authMessageMain.textContent = 'Ошибка отправки: ' + msg;
+            return;
+        }
+
+        // успех
         otpTarget.textContent = fullPhone;
         stepPhone.style.display = 'none';
         stepOtp.style.display = 'block';
@@ -197,20 +237,38 @@ sendOtpBtn.addEventListener('click', async () => {
         authMessageMain.textContent = '';
         authMessageOtp.textContent = 'Код отправлен.';
         startResendTimer(60);
+    } catch (e) {
+        sendOtpBtn.disabled = false;
+        console.error('sendOtp error', e);
+        authMessageMain.textContent = 'Сервис временно недоступен. Попробуйте позже или войдите через Google.';
     }
 });
 
-// Повторная отправка (resend)
+// Повторная отправка (resend) — аналогично с обработкой ошибок
 resendOtpBtn.addEventListener('click', async () => {
     resendOtpBtn.disabled = true;
     authMessageOtp.textContent = 'Повторная отправка...';
     const fullPhone = buildPhoneE164();
-    const { error } = await supabase.auth.signInWithOtp({ phone: fullPhone });
-    if (error) {
-        authMessageOtp.textContent = 'Ошибка отправки: ' + error.message;
-    } else {
+    try {
+        const { error } = await supabase.auth.signInWithOtp({ phone: fullPhone });
+        if (error) {
+            const msg = (error.message || '').toString();
+            if (/unsupported phone provider|Unsupported phone provider/i.test(msg) || /provider/i.test(msg)) {
+                authMessageOtp.textContent = 'Невозможно отправить SMS для этого номера. Попробуйте Google или другой номер.';
+                googleBtn.focus();
+                return;
+            }
+            authMessageOtp.textContent = 'Ошибка отправки: ' + msg;
+            return;
+        }
         authMessageOtp.textContent = 'Код отправлен повторно.';
         startResendTimer(60);
+    } catch (e) {
+        console.error('resend error', e);
+        authMessageOtp.textContent = 'Ошибка связи. Попробуйте позже.';
+    } finally {
+        // если таймер не запущен — убедимся, что кнопка снова разблокируется корректно через UI
+        updateResendUI();
     }
 });
 
