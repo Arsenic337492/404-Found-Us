@@ -303,7 +303,7 @@ googleBtn.addEventListener('click', async () => {
     authMessageMain.textContent = '';
     await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: window.location.origin }
+        options: { redirectTo: window.location.origin + '/in-check.html' }
     });
 });
 
