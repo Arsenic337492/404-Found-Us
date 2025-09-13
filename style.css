@@ -171,6 +171,72 @@ main {
 .close:hover {
     color: #d33;
 }
+.modal-content label {
+    font-size: 0.9em;
+    margin-top: 8px;
+    display: block;
+    color: #333;
+}
+.modal-content input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Auth modal detailed styles */
+.auth-modal-small { max-width: 420px; padding: 18px 18px 22px; }
+.auth-box { display:flex; flex-direction:column; gap:12px; }
+.auth-brand { text-align:center; margin-bottom:6px; }
+.logo {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:48px; height:48px; border-radius:10px; background:#3399ff;
+    color:#fff; font-weight:700; font-size:1.1rem; margin:0 auto 8px;
+}
+.auth-brand h2 { margin:0; font-size:1.15rem; }
+.hint { margin:6px 0 0; font-size:0.9rem; color:#666; }
+
+/* phone input row */
+.phone-row { display:flex; gap:8px; align-items:center; }
+#auth-phone-code {
+    width:86px; padding:8px; border-radius:8px; border:1px solid #ddd; background:#fafafa;
+}
+#auth-phone {
+    flex:1; padding:10px; border-radius:8px; border:1px solid #ddd;
+}
+
+/* buttons */
+.primary {
+    width:100%; padding:10px 12px; border-radius:8px; border:none;
+    background:#222; color:#fff; font-weight:600; cursor:pointer;
+}
+.primary:hover { opacity:0.95; }
+.oauth-btn {
+    display:block; width:100%; padding:10px; border-radius:8px;
+    border:none; background:#db4437; color:#fff; font-weight:600; cursor:pointer;
+}
+.link-btn {
+    background:none; border:none; color:#3399ff; cursor:pointer; padding:8px;
+}
+.or-sep { text-align:center; margin:8px 0; color:#999; font-size:0.9rem; }
+.or-sep span { background:#fff; padding:0 8px; }
+
+/* OTP step */
+.otp-note { font-size:0.95rem; color:#444; margin:0 0 6px; }
+.otp-actions { display:flex; gap:8px; margin-top:10px; align-items:center; }
+#auth-otp { width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; font-size:1rem; text-align:center; letter-spacing:3px; }
+
+/* resend UI */
+.resend-row { display:flex; align-items:center; gap:8px; margin-top:8px; }
+.timer { color:#666; font-size:0.9rem; }
+
+/* small helpers */
+.visually-hidden { position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap; }
+
+/* Responsive tweaks */
+@media (max-width:420px) {
+    .auth-modal-small { margin:40px 16px; width:auto; max-width:96vw; }
+    #auth-phone-code { width:74px; }
+}
+
 @media (max-width: 600px) {
     main {
         max-width: 98vw;
