@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Decentrathon Indrive YOLO Demo</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <header>
@@ -12,10 +13,18 @@
     </header>
     <main>
         <form id="upload-form">
-            <input type="file" id="photo-input" accept="image/*">
+            <input type="file" id="photo-input" accept="image/*" title="Выберите изображение для загрузки">
+            <button type="button" id="clear-btn" style="display:none;">Очистить</button>
         </form>
+        <div id="drop-zone" title="Перетащите изображение сюда">или перетащите изображение сюда</div>
         <div id="preview"></div>
         <div id="result"></div>
+        <div id="spinner" style="display:none;">
+            <span>Загрузка...</span>
+        </div>
+        <div id="description">
+            <p>Этот сайт позволяет загружать фото и получать результаты распознавания объектов с помощью нейронной сети YOLO. Просто выберите или перетащите изображение, и результат появится ниже.</p>
+        </div>
     </main>
     <script src="main.js"></script>
 </body>
