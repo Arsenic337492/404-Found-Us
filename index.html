@@ -33,28 +33,32 @@
         <div id="description">
             <p>Этот сайт позволяет загружать фото и получать результаты распознавания объектов с помощью нейронной сети YOLO. Просто выберите или перетащите изображение, и результат появится ниже.</p>
         </div>
-        <!-- Модальное окно авторизации -->
-        <div id="auth-modal" class="modal">
+
+        <!-- Модальное окно авторизации: телефон (OTP) + Google OAuth -->
+        <div id="auth-modal" class="modal" aria-hidden="true">
             <div class="modal-content">
-                <span class="close" id="auth-modal-close">&times;</span>
-                <form id="auth-form">
-                    <h2>Вход / Регистрация</h2>
-                    <input type="email" id="auth-email" placeholder="Email" required>
-                    <input type="password" id="auth-password" placeholder="Пароль" required>
-                    <button type="submit" id="login-btn">Войти</button>
-                    <button type="button" id="register-btn">Регистрация</button>
-                </form>
-                <div id="auth-message"></div>
-            </div>
-        </div>
-    </main>
-    <script src="main.js"></script>
-</body>
-</html>
-                    <button type="submit" id="login-btn">Войти</button>
-                    <button type="button" id="register-btn">Регистрация</button>
-                </form>
-                <div id="auth-message"></div>
+                <span class="close" id="auth-modal-close" aria-label="Закрыть">&times;</span>
+                <h2>Вход / Регистрация</h2>
+
+                <!-- Телефонный вход -->
+                <label for="auth-phone">Номер телефона (в формате +71234567890)</label>
+                <input type="tel" id="auth-phone" placeholder="+7..." inputmode="tel" autocomplete="tel">
+
+                <button type="button" id="send-otp-btn">Отправить код (SMS)</button>
+
+                <!-- Поле для ввода кода, скрыто по умолчанию -->
+                <div id="otp-block" style="display:none; margin-top:8px;">
+                    <label for="auth-otp">Код из SMS</label>
+                    <input type="text" id="auth-otp" placeholder="123456" inputmode="numeric" maxlength="10">
+                    <button type="button" id="verify-otp-btn">Подтвердить код</button>
+                </div>
+
+                <hr style="margin:12px 0;">
+
+                <!-- OAuth Google -->
+                <button type="button" id="google-btn" class="oauth-btn">Войти через Google</button>
+
+                <div id="auth-message" role="status" aria-live="polite"></div>
             </div>
         </div>
     </main>
