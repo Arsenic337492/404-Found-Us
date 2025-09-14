@@ -49,7 +49,7 @@
                     <div class="auth-brand">
                         <div class="logo">IN</div>
                         <h2 id="auth-title">Вход в Indrive</h2>
-                        <p class="hint">Войдите по номеру телефона или через Google</p>
+                        <p class="hint">Войдите по email или через Google</p>
                     </div>
 
                     <div id="auth-step-email" class="auth-step">
@@ -62,21 +62,6 @@
                         <button type="button" id="send-magic-btn" class="primary" style="background:#2b6cb0;margin-bottom:6px;">Войти по ссылке (Email)</button>
                         <button type="button" id="google-btn" class="oauth-btn">Войти через Google</button>
                         <div id="auth-message-email" role="status" aria-live="polite"></div>
-                    </div>
-
-                    <div id="auth-step-otp" class="auth-step" style="display:none;">
-                        <p class="otp-note">Код отправлен на <span id="otp-target"></span></p>
-                        <label for="auth-otp" class="visually-hidden">Код из SMS</label>
-                        <input type="text" id="auth-otp" inputmode="numeric" maxlength="6" placeholder="Введите код" />
-                        <div class="otp-actions">
-                            <button type="button" id="verify-otp-btn" class="primary">Подтвердить код</button>
-                            <button type="button" id="change-number-btn" class="link-btn">Изменить номер</button>
-                        </div>
-                        <div class="resend-row">
-                            <button type="button" id="resend-otp-btn" class="link-btn" disabled>Отправить код повторно</button>
-                            <span id="resend-timer" class="timer"></span>
-                        </div>
-                        <div id="auth-message-otp" role="status" aria-live="polite"></div>
                     </div>
                 </div>
             </div>
