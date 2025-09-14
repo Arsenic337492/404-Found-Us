@@ -52,7 +52,16 @@
                         <p class="hint">Войдите по номеру телефона или через Google</p>
                     </div>
 
-                    <div id="auth-step-phone" class="auth-step">
+                    <div id="auth-step-email" class="auth-step">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="Email" autocomplete="email" />
+                        <label for="login-password">Пароль</label>
+                        <input type="password" id="login-password" placeholder="Пароль" autocomplete="current-password" minlength="8" />
+                        <button type="button" id="login-btn" class="primary">Войти</button>
+                        <div id="auth-message-email" role="status" aria-live="polite"></div>
+                    </div>
+
+                    <div id="auth-step-phone" class="auth-step" style="display:none;">
                         <label for="auth-phone" class="visually-hidden">Номер телефона</label>
                         <div class="phone-row">
                             <span id="auth-phone-flag" aria-hidden="true">🇷🇺</span>
