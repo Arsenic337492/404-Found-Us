@@ -61,12 +61,22 @@ function showPreview(file) {
     }
 }
 
+// Event listener for the hidden file input
 if (photoInput) {
     photoInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file) showPreview(file);
     });
 }
+
+// Event listener for the custom "Выбрать файл" button
+const dropZoneBtn = document.querySelector('.drop-zone-btn');
+if (dropZoneBtn && photoInput) {
+    dropZoneBtn.addEventListener('click', () => {
+        photoInput.click(); // Trigger the hidden file input
+    });
+}
+
 
 if (clearBtn) {
     clearBtn.addEventListener('click', function() {
