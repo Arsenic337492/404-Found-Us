@@ -1,46 +1,83 @@
-// Data for the hero section
-const heroContent = [
-    {
-        title: 'Распознавание чистоты авто',
-        subtitle: 'inCheck может определять, насколько чист автомобиль, всего по одной фотографии.',
-    },
-    {
-        title: 'Определение повреждений',
-        subtitle: 'С помощью inCheck вы можете обнаружить повреждения на кузове автомобиля.',
-    },
-    {
-        title: 'Защита вашего комфорта',
-        subtitle: 'Наш сервис помогает обеспечить безопасность и комфорт во время поездок.',
-    },
-];
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>InCheck — распознавание изображений</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav id="navbar" class="nav-branding">
+        <a href="index.html" class="brand-link" aria-label="Перейти на главную страницу InCheck">
+            <div class="logo-circle" aria-hidden="true">IC</div>
+            <span class="brand-title">InCheck</span>
+        </a>
+        <div class="nav-actions">
+            <a href="in-check.html" class="btn-check">Начать проверку</a>
+        </div>
+    </nav>
 
-let heroIndex = 0;
-const heroTitleEl = document.getElementById('hero-title');
-const heroSubtitleEl = document.getElementById('hero-subtitle');
+    <main>
+        <section class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 id="hero-title"></h1>
+                <p id="hero-subtitle"></p>
+                <a href="in-check.html" class="primary-btn hero-cta">Начать проверку</a>
+            </div>
+        </section>
 
-// Function to update the hero section content
-function updateHeroContent() {
-    const { title, subtitle } = heroContent[heroIndex];
-    heroTitleEl.textContent = title;
-    heroSubtitleEl.textContent = subtitle;
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <span class="stat-value">~10,000</span>
+                    <p class="stat-label">Изображений в обучающей выборке</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">98.5%</span>
+                    <p class="stat-label">Точность определения чистоты</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">95.2%</span>
+                    <p class="stat-label">Точность определения повреждений</p>
+                </div>
+            </div>
+        </section>
 
-    heroIndex = (heroIndex + 1) % heroContent.length;
-}
+        <section class="values-section">
+            <h2 class="section-title">Ценность для inDrive</h2>
+            <div class="values-container">
+                <div class="value-card">
+                    <h3 class="card-title">Повышение доверия</h3>
+                    <p class="card-text">Позволяет пассажирам заранее видеть состояние автомобиля и повышает прозрачность сервиса.</p>
+                </div>
+                <div class="value-card">
+                    <h3 class="card-title">Контроль качества</h3>
+                    <p class="card-text">Автоматический анализ помогает поддерживать высокие стандарты чистоты и целостности автопарка.</p>
+                </div>
+                <div class="value-card">
+                    <h3 class="card-title">Безопасность</h3>
+                    <p class="card-text">Система может выявлять серьезные повреждения, сигнализируя о потенциальных рисках для водителей и пассажиров.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="index.html" class="brand-link">
+                    <div class="logo-circle">IC</div>
+                    <span class="brand-title">InCheck</span>
+                </a>
+                <p class="copy">&copy; 2025 InCheck. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-// Update the content every 5 seconds
-setInterval(updateHeroContent, 5000);
-
-// Initialize the hero content on page load
-document.addEventListener('DOMContentLoaded', updateHeroContent);
-
-// Logic for the sticky navbar
-const nav = document.getElementById('navbar');
-let lastScrollY = window.scrollY;
-
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        nav.classList.add('scrolled');
-    } else {
-        nav.classList.remove('scrolled');
-    }
-});
+    <script src="main.js"></script>
+</body>
+</html>
