@@ -5,97 +5,50 @@
     <title>InCheck — распознавание изображений</title>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- ...existing code... (navbar etc.) -->
     <nav id="navbar" class="nav-branding">
-        <div class="brand" aria-label="InCheck">
+        <a href="index.html" class="brand-link" aria-label="Перейти на главную страницу InCheck">
             <div class="logo-circle" aria-hidden="true">IC</div>
             <span class="brand-title">InCheck</span>
-        </div>
-        <div class="nav-actions">
-            <button id="nav-login-btn" class="btn-login">Войти</button>
-            <span id="nav-user" style="display:none;"></span>
-            <button id="nav-logout-btn" style="display:none;">Выйти</button>
-        </div>
+        </a>
     </nav>
-
     <main>
-        <!-- upload form / preview / auth modal (тот же функционал, перенесён сюда) -->
-        <form id="upload-form">
-            <input type="file" id="photo-input" accept="image/*" title="Выберите изображение для загрузки">
-            <button type="button" id="clear-btn" style="display:none;">Очистить</button>
-        </form>
+        <section class="hero">
+            <div class="hero-inner">
+                <h1>Определение состояния автомобиля по фото</h1>
+                <p>Этот сервис помогает определить, чистый или грязный автомобиль, а также целый или битый, с помощью модели машинного обучения YOLO.</p>
+                <a href="in-check.html" class="hero-cta">Начать проверку</a>
+            </div>
+        </section>
 
-        <div id="drop-zone" title="Перетащите изображение сюда">или перетащите изображение сюда</div>
-        <div id="preview"></div>
-        <div id="result"></div>
-        <div id="spinner" style="display:none;"><span>Загрузка...</span></div>
-
-        <!-- Описание -->
-        <div id="description">
-            <p>Этот сервис делает превью и подготовку изображения для отправки в модель YOLO. Используйте кнопку «Войти», чтобы открыть модальное окно авторизации.</p>
-        </div>
-
-        <!-- Модальное окно авторизации (обновлённое) -->
-        <div id="auth-modal" class="modal" aria-hidden="true">
-            <div class="modal-content auth-modal-small" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-                <button class="close" id="auth-modal-close" aria-label="Закрыть">&times;</button>
-                <div class="auth-box">
-                    <div class="auth-brand">
-                        <div class="logo">IN</div>
-                        <h2 id="auth-title">Вход в Indrive</h2>
-                        <p class="hint">Войдите по номеру телефона или через Google</p>
-                    </div>
-
-                    <div id="auth-step-phone" class="auth-step">
-                        <label for="auth-phone" class="visually-hidden">Номер телефона</label>
-                        <div class="phone-row">
-                            <span id="auth-phone-flag" aria-hidden="true">🇷🇺</span>
-                            <select id="auth-phone-code" aria-label="Код страны">
-                                <option value="+7">+7</option>
-                                <option value="+1">+1</option>
-                                <option value="+44">+44</option>
-                            </select>
-                            <input type="tel" id="auth-phone" inputmode="tel" placeholder="9 123 4567" autocomplete="tel" />
-                        </div>
-                        <button type="button" id="send-otp-btn" class="primary">Отправить код</button>
-
-                        <div class="or-sep"><span>или</span></div>
-
-                        <div class="email-row" style="margin-bottom:8px;">
-                            <input type="email" id="auth-email" placeholder="Email для быстрой авторизации (альтернатива SMS)"/>
-                        </div>
-                        <button type="button" id="send-magic-btn" class="primary" style="background:#2b6cb0;margin-bottom:6px;">Отправить ссылку (Email)</button>
-
-                        <button type="button" id="google-btn" class="oauth-btn">Войти через Google</button>
-                        <div id="provider-help" style="margin-top:8px;color:#a00;display:none;font-size:0.92em;"></div>
-                        <div id="auth-message" role="status" aria-live="polite"></div>
-                    </div>
-
-                    <div id="auth-step-otp" class="auth-step" style="display:none;">
-                        <p class="otp-note">Код отправлен на <span id="otp-target"></span></p>
-                        <label for="auth-otp" class="visually-hidden">Код из SMS</label>
-                        <input type="text" id="auth-otp" inputmode="numeric" maxlength="6" placeholder="Введите код" />
-                        <div class="otp-actions">
-                            <button type="button" id="verify-otp-btn" class="primary">Подтвердить код</button>
-                            <button type="button" id="change-number-btn" class="link-btn">Изменить номер</button>
-                        </div>
-                        <div class="resend-row">
-                            <button type="button" id="resend-otp-btn" class="link-btn" disabled>Отправить код повторно</button>
-                            <span id="resend-timer" class="timer"></span>
-                        </div>
-                        <div id="auth-message-otp" role="status" aria-live="polite"></div>
-                    </div>
+        <section class="stats">
+            <h2>Проблема и ценность</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">Доверие</div>
+                    <div class="stat-label">Повышение доверия пассажиров к сервису inDrive</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Качество</div>
+                    <div class="stat-label">Контроль и поддержание качества сервиса</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Безопасность</div>
+                    <div class="stat-label">Предупреждение о неисправностях и битых машинах</div>
                 </div>
             </div>
-        </div>
-    </main>
+        </section>
 
+        <section class="support">
+            <h2>Надежность и этика</h2>
+            <p>Мы заботимся о вашей приватности и используем только фотографии автомобилей без номеров. Модель разработана на основе открытых наборов данных.</p>
+        </section>
+
+    </main>
     <script src="main.js"></script>
 </body>
 </html>
