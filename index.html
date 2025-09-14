@@ -5,7 +5,6 @@
     <title>InCheck — распознавание изображений</title>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -16,17 +15,23 @@
             <span class="brand-title">InCheck</span>
         </a>
         <div class="nav-actions">
-            <a href="in-check.html" class="btn-check">Начать проверку</a>
+            <button class="nav-btn">Ru</button>
+            <button class="nav-btn">Меню</button>
         </div>
     </nav>
 
     <main>
         <section class="hero-section">
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <h1 id="hero-title"></h1>
-                <p id="hero-subtitle"></p>
-                <a href="in-check.html" class="primary-btn hero-cta">Начать проверку</a>
+            <div id="hero-bg" class="hero-background"></div>
+            <div class="hero-content-wrapper">
+                <div class="hero-content">
+                    <h1 id="hero-title"></h1>
+                    <p id="hero-subtitle"></p>
+                    <a href="in-check.html" class="primary-btn hero-cta">Начать проверку</a>
+                </div>
+            </div>
+            <div class="hero-indicator-container">
+                <div class="hero-indicator-bar" id="hero-indicator-bar"></div>
             </div>
         </section>
 
@@ -52,18 +57,19 @@
             <div class="values-container">
                 <div class="value-card">
                     <h3 class="card-title">Повышение доверия</h3>
-                    <p class="card-text">Позволяет пассажирам заранее видеть состояние автомобиля и повышает прозрачность сервиса.</p>
+                    <p class="card-text">Позволяет пассажирам заранее видеть состояние автомобиля и <span class="highlight">повышает прозрачность сервиса.</span></p>
                 </div>
                 <div class="value-card">
                     <h3 class="card-title">Контроль качества</h3>
-                    <p class="card-text">Автоматический анализ помогает поддерживать высокие стандарты чистоты и целостности автопарка.</p>
+                    <p class="card-text">Автоматический анализ помогает поддерживать <span class="highlight">высокие стандарты чистоты</span> и целостности автопарка.</p>
                 </div>
                 <div class="value-card">
                     <h3 class="card-title">Безопасность</h3>
-                    <p class="card-text">Система может выявлять серьезные повреждения, сигнализируя о потенциальных рисках для водителей и пассажиров.</p>
+                    <p class="card-text">Система может выявлять серьезные повреждения, сигнализируя о <span class="highlight">потенциальных рисках</span> для водителей и пассажиров.</p>
                 </div>
             </div>
         </section>
+        
     </main>
     
     <footer>
