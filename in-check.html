@@ -5,22 +5,19 @@
     <title>InCheck — распознавание изображений</title>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- ...existing code... (navbar etc.) -->
     <nav id="navbar" class="nav-branding">
-        <div class="brand" aria-label="InCheck">
+        <a href="index.html" class="brand-link" aria-label="Перейти на главную страницу InCheck">
             <div class="logo-circle" aria-hidden="true">IC</div>
             <span class="brand-title">InCheck</span>
-        </div>
+        </a>
     </nav>
 
     <main>
-        <!-- upload form / preview / auth modal (тот же функционал, перенесён сюда) -->
         <form id="upload-form">
             <input type="file" id="photo-input" accept="image/*" title="Выберите изображение для загрузки">
             <button type="button" id="clear-btn" style="display:none;">Очистить</button>
@@ -31,9 +28,8 @@
         <div id="result"></div>
         <div id="spinner" style="display:none;"><span>Загрузка...</span></div>
 
-        <!-- Описание -->
         <div id="description">
-            <p>Этот сервис делает превью и подготовку изображения для отправки в модель YOLO. Используйте кнопку «Войти», чтобы открыть модальное окно авторизации.</p>
+            <p>Этот сервис делает превью и подготовку изображения для отправки в модель YOLO.</p>
         </div>
     </main>
 
