@@ -1,31 +1,44 @@
-/* Переопределение палитры */
+/* Override palette to requested colors */
 :root {
-    --brand-green: #32CD32;
-    --white: #ffffff;
-    --dark: #1a1a1a;
-
+    --brand-green: #32CD32;
+    --white: #ffffff;
+    --dark: #1a1a1a;
     --bg: #f3f5f6;
-    --card: #ffffff;
-    --muted: #9aa3ab;
-    --text: #0f1720;
-    --primary-start: #00c853; /* bright green */
-    --primary-end: #00a86b; /* darker green */
-    --accent: #ffd54a;
-    --danger: #d33;
-    --nav-top: rgba(26,26,26,0.95);
-    --nav-bottom: rgba(26,26,26,0.9);
-    --glass-shadow: 0 6px 20px rgba(2,6,23,0.08);
-    --card-shadow: 0 8px 30px rgba(9,20,30,0.08);
+    --card: #ffffff;
+    --muted: #9aa3ab;
+    --text: #0f1720;
+    --primary-start: #00c853; /* bright green */
+    --primary-end: #00a86b; /* darker green */
+    --accent: #ffd54a;
+    --danger: #d33;
+    --nav-top: #081018;
+    --nav-bottom: #071016;
+    --glass-shadow: 0 6px 20px rgba(2,6,23,0.08);
+    --card-shadow: 0 8px 30px rgba(9,20,30,0.08);
 }
 
-/* Общие стили */
+/* Use Poppins if available */
 body {
-    font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: var(--bg);
-    color: var(--text);
-    margin: 0;
-    padding: 0;
+    font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
     line-height: 1.6;
+}
+
+/* General Layout */
+main {
+    max-width: 98vw;
+    margin: 0 auto;
+    padding: 0;
+}
+
+header {
+    background: #222;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
 }
 
 h1, h2, h3 {
@@ -44,7 +57,7 @@ h1, h2, h3 {
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    background: transparent; /* Изначально прозрачный фон */
+    background: transparent;
     z-index: 100;
     box-shadow: none;
     transition: background 0.3s ease, box-shadow 0.3s ease, height 0.3s ease;
@@ -107,11 +120,6 @@ h1, h2, h3 {
 .btn-check:hover {
     transform: translateY(-2px);
     opacity: 0.98;
-}
-
-/* Основной контент */
-main {
-    margin-top: 0;
 }
 
 /* Hero-секция */
@@ -269,7 +277,85 @@ footer {
     margin-top: 15px;
 }
 
-/* Адаптивность для мобильных */
+/* Стили для in-check.html (страница загрузки фото) */
+main {
+    max-width: 500px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+#upload-form {
+    margin-bottom: 20px;
+}
+
+#photo-input {
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+#preview img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 30px rgba(9,20,30,0.06);
+}
+
+#result {
+    min-height: 40px;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 6px;
+    color: #333;
+}
+
+#spinner {
+    text-align: center;
+    margin: 15px 0;
+    color: #3399ff;
+    font-weight: bold;
+}
+
+#drop-zone {
+    border: 2px dashed #888;
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+    color: #888;
+    margin-bottom: 20px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+#drop-zone.dragover {
+    background: #e0eaff;
+    border-color: #3399ff;
+    color: #3399ff;
+}
+
+#clear-btn {
+    margin-left: 10px;
+    padding: 6px 14px;
+    background: #eee;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#clear-btn:hover {
+    background: #ffdada;
+}
+
+#description {
+    margin-top: 30px;
+    font-size: 0.95em;
+    color: #555;
+}
+
+/* Responsive tweaks */
 @media (max-width: 768px) {
     .nav-branding {
         padding: 8px 12px;
@@ -307,5 +393,9 @@ footer {
     }
     .stat-value {
         font-size: 2rem;
+    }
+    .main-upload {
+        max-width: 98vw;
+        padding: 10px;
     }
 }
