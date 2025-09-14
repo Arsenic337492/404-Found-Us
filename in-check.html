@@ -17,11 +17,6 @@
             <div class="logo-circle" aria-hidden="true">IC</div>
             <span class="brand-title">InCheck</span>
         </div>
-        <div class="nav-actions">
-            <button id="nav-login-btn" class="btn-login">Войти</button>
-            <span id="nav-user" style="display:none;"></span>
-            <button id="nav-logout-btn" style="display:none;">Выйти</button>
-        </div>
     </nav>
 
     <main>
@@ -39,32 +34,6 @@
         <!-- Описание -->
         <div id="description">
             <p>Этот сервис делает превью и подготовку изображения для отправки в модель YOLO. Используйте кнопку «Войти», чтобы открыть модальное окно авторизации.</p>
-        </div>
-
-        <!-- Модальное окно авторизации (обновлённое) -->
-        <div id="auth-modal" class="modal" aria-hidden="true">
-            <div class="modal-content auth-modal-small" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-                <button class="close" id="auth-modal-close" aria-label="Закрыть">&times;</button>
-                <div class="auth-box">
-                    <div class="auth-brand">
-                        <div class="logo">IN</div>
-                        <h2 id="auth-title">Вход в Indrive</h2>
-                        <p class="hint">Войдите по email или через Google</p>
-                    </div>
-
-                    <div id="auth-step-email" class="auth-step">
-                        <label for="login-email">Email</label>
-                        <input type="email" id="login-email" placeholder="Email" autocomplete="email" />
-                        <label for="login-password">Пароль</label>
-                        <input type="password" id="login-password" placeholder="Пароль" autocomplete="current-password" minlength="8" />
-                        <button type="button" id="login-btn" class="primary">Войти</button>
-                        <div class="or-sep"><span>или</span></div>
-                        <button type="button" id="send-magic-btn" class="primary" style="background:#2b6cb0;margin-bottom:6px;">Войти по ссылке (Email)</button>
-                        <button type="button" id="google-btn" class="oauth-btn">Войти через Google</button>
-                        <div id="auth-message-email" role="status" aria-live="polite"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 
