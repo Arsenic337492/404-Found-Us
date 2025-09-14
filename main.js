@@ -104,6 +104,12 @@ if (authModal) {
     const authMessageMain = document.getElementById('auth-message');
     const authMessageOtp = document.getElementById('auth-message-otp');
 
+    const loginBtn = document.getElementById('login-btn');
+    const loginEmail = document.getElementById('login-email');
+    const loginPassword = document.getElementById('login-password');
+    const authMessageEmail = document.getElementById('auth-message-email');
+    const authStepEmail = document.getElementById('auth-step-email');
+
     let resendTimer = null;
     let resendSeconds = 0;
 
@@ -305,6 +311,37 @@ if (authModal) {
             options: { redirectTo: window.location.origin + '/in-check.html' }
         });
     });
+
+    if (authStepEmail) {
+        // Показывать email форму по умолчанию
+        authStepEmail.style.display = 'block';
+        // Вход по email+пароль
+        loginBtn.addEventListener('click', async () => {
+            authMessageEmail.textContent = '';
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value;
+            if (!email || !password) {
+                authMessageEmail.textContent = 'Введите email и пароль.';
+                return;
+            }
+            loginBtn.disabled = true;
+            authMessageEmail.textContent = 'Вход...';
+            try {
+                const { error } = await supabase.auth.signInWithPassword({ email, password });
+                loginBtn.disabled = false;
+                if (error) {
+                    authMessageEmail.textContent = 'Ошибка входа: ' + error.message;
+                    return;
+                }
+                authMessageEmail.textContent = 'Успешно!';
+                await checkAuth();
+                closeAuth();
+            } catch (e) {
+                loginBtn.disabled = false;
+                authMessageEmail.textContent = 'Ошибка сервера. Попробуйте позже.';
+            }
+        });
+    }
 } else {
     // If no auth modal on the page, ensure nav "Вход" links to in-check page (static fallback)
     const navLoginLink = document.querySelector('.nav-actions .btn-login');
