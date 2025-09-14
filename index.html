@@ -1,54 +1,46 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>InCheck — распознавание изображений</title>
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <nav id="navbar" class="nav-branding">
-        <a href="index.html" class="brand-link" aria-label="Перейти на главную страницу InCheck">
-            <div class="logo-circle" aria-hidden="true">IC</div>
-            <span class="brand-title">InCheck</span>
-        </a>
-    </nav>
-    <main>
-        <section class="hero">
-            <div class="hero-inner">
-                <h1>Определение состояния автомобиля по фото</h1>
-                <p>Этот сервис помогает определить, чистый или грязный автомобиль, а также целый или битый, с помощью модели машинного обучения YOLO.</p>
-                <a href="in-check.html" class="hero-cta">Начать проверку</a>
-            </div>
-        </section>
+// Data for the hero section
+const heroContent = [
+    {
+        title: 'Распознавание чистоты авто',
+        subtitle: 'inCheck может определять, насколько чист автомобиль, всего по одной фотографии.',
+    },
+    {
+        title: 'Определение повреждений',
+        subtitle: 'С помощью inCheck вы можете обнаружить повреждения на кузове автомобиля.',
+    },
+    {
+        title: 'Защита вашего комфорта',
+        subtitle: 'Наш сервис помогает обеспечить безопасность и комфорт во время поездок.',
+    },
+];
 
-        <section class="stats">
-            <h2>Проблема и ценность</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value">Доверие</div>
-                    <div class="stat-label">Повышение доверия пассажиров к сервису inDrive</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">Качество</div>
-                    <div class="stat-label">Контроль и поддержание качества сервиса</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">Безопасность</div>
-                    <div class="stat-label">Предупреждение о неисправностях и битых машинах</div>
-                </div>
-            </div>
-        </section>
+let heroIndex = 0;
+const heroTitleEl = document.getElementById('hero-title');
+const heroSubtitleEl = document.getElementById('hero-subtitle');
 
-        <section class="support">
-            <h2>Надежность и этика</h2>
-            <p>Мы заботимся о вашей приватности и используем только фотографии автомобилей без номеров. Модель разработана на основе открытых наборов данных.</p>
-        </section>
+// Function to update the hero section content
+function updateHeroContent() {
+    const { title, subtitle } = heroContent[heroIndex];
+    heroTitleEl.textContent = title;
+    heroSubtitleEl.textContent = subtitle;
 
-    </main>
-    <script src="main.js"></script>
-</body>
-</html>
+    heroIndex = (heroIndex + 1) % heroContent.length;
+}
+
+// Update the content every 5 seconds
+setInterval(updateHeroContent, 5000);
+
+// Initialize the hero content on page load
+document.addEventListener('DOMContentLoaded', updateHeroContent);
+
+// Logic for the sticky navbar
+const nav = document.getElementById('navbar');
+let lastScrollY = window.scrollY;
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+});
