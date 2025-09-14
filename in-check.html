@@ -2,10 +2,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>InCheck — распознавание изображений</title>
+    <title>Загрузить фото для InCheck</title>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -15,23 +14,45 @@
             <div class="logo-circle" aria-hidden="true">IC</div>
             <span class="brand-title">InCheck</span>
         </a>
+        <div class="nav-actions">
+            <button class="nav-btn">Ru</button>
+            <button class="nav-btn">Меню</button>
+        </div>
     </nav>
 
-    <main>
+    <main id="upload-main">
+        <h1>Загрузка фотографии</h1>
         <form id="upload-form">
-            <input type="file" id="photo-input" accept="image/*" title="Выберите изображение для загрузки">
-            <button type="button" id="clear-btn" style="display:none;">Очистить</button>
+            <input type="file" id="photo-input" accept="image/*">
+            <div id="drop-zone">
+                <p class="drop-zone-text">Перетащите изображение сюда или</p>
+                <button type="button" class="drop-zone-btn">Выбрать файл</button>
+            </div>
+            <div id="preview"></div>
+            <p id="spinner" style="display:none;">Анализируем...</p>
+            <p id="result"></p>
+            <div style="text-align: right;">
+                <button type="button" id="clear-btn" style="display:none;">Очистить</button>
+            </div>
         </form>
 
-        <div id="drop-zone" title="Перетащите изображение сюда">или перетащите изображение сюда</div>
-        <div id="preview"></div>
-        <div id="result"></div>
-        <div id="spinner" style="display:none;"><span>Загрузка...</span></div>
-
-        <div id="description">
-            <p>Этот сервис делает превью и подготовку изображения для отправки в модель YOLO.</p>
-        </div>
+        <p id="description">
+            Загрузите фотографию автомобиля, чтобы InCheck проанализировал ее на предмет чистоты или повреждений.
+            Мы используем передовые алгоритмы машинного обучения для точного определения состояния вашего транспортного средства.
+        </p>
     </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="index.html" class="brand-link">
+                    <div class="logo-circle">IC</div>
+                    <span class="brand-title">InCheck</span>
+                </a>
+                <p class="copy">&copy; 2025 InCheck. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="main.js"></script>
 </body>
