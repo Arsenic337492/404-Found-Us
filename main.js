@@ -1,12 +1,3 @@
-const photoInput = document.getElementById('photo-input');
-const preview = document.getElementById('preview');
-const result = document.getElementById('result');
-const dropZone = document.getElementById('drop-zone');
-const clearBtn = document.getElementById('clear-btn');
-const spinner = document.getElementById('spinner');
-
-const MAX_SIZE_MB = 5;
-
 // Data for the hero section
 const heroContent = [
     {
@@ -54,6 +45,16 @@ if (nav) {
         }
     });
 }
+
+// Photo upload logic for in-check.html
+const photoInput = document.getElementById('photo-input');
+const preview = document.getElementById('preview');
+const result = document.getElementById('result');
+const dropZone = document.getElementById('drop-zone');
+const clearBtn = document.getElementById('clear-btn');
+const spinner = document.getElementById('spinner');
+
+const MAX_SIZE_MB = 5;
 
 function showSpinner(show) {
     if (spinner) {
@@ -114,7 +115,9 @@ if (clearBtn) {
         if (result) {
             result.textContent = '';
         }
-        clearBtn.style.display = 'none';
+        if (clearBtn) {
+            clearBtn.style.display = 'none';
+        }
     });
 }
 
