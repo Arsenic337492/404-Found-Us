@@ -1,41 +1,67 @@
-// Data for the hero section
+// Data for the hero section with images
 const heroContent = [
     {
         title: 'Распознавание чистоты авто',
         subtitle: 'inCheck может определять, насколько чист автомобиль, всего по одной фотографии.',
+        image: 'https://images.unsplash.com/photo-1577935515320-b0ef9892c179?w=1600&q=80&auto=format&fit=crop'
     },
     {
         title: 'Определение повреждений',
         subtitle: 'С помощью inCheck вы можете обнаружить повреждения на кузове автомобиля.',
+        image: 'https://images.unsplash.com/photo-1610486847814-c081308a09f3?w=1600&q=80&auto=format&fit=crop'
     },
     {
         title: 'Защита вашего комфорта',
         subtitle: 'Наш сервис помогает обеспечить безопасность и комфорт во время поездок.',
+        image: 'https://images.unsplash.com/photo-1627471207914-f481a546d140?w=1600&q=80&auto=format&fit=crop'
     },
 ];
 
 let heroIndex = 0;
 const heroTitleEl = document.getElementById('hero-title');
 const heroSubtitleEl = document.getElementById('hero-subtitle');
+const heroBgEl = document.getElementById('hero-bg');
+const heroIndicatorBar = document.getElementById('hero-indicator-bar');
+const nav = document.getElementById('navbar');
 
-// Function to update the hero section content
+// Function to update the hero section content and image
 function updateHeroContent() {
-    if (heroTitleEl && heroSubtitleEl) {
-        const { title, subtitle } = heroContent[heroIndex];
+    if (heroTitleEl && heroSubtitleEl && heroBgEl) {
+        const { title, subtitle, image } = heroContent[heroIndex];
         heroTitleEl.textContent = title;
         heroSubtitleEl.textContent = subtitle;
+        heroBgEl.style.backgroundImage = `url(${image})`;
+
         heroIndex = (heroIndex + 1) % heroContent.length;
+        resetIndicator();
+    }
+}
+
+// Logic for the hero section indicator
+function resetIndicator() {
+    if (heroIndicatorBar) {
+        heroIndicatorBar.style.transition = 'none';
+        heroIndicatorBar.style.width = '0%';
+        setTimeout(() => {
+            heroIndicatorBar.style.transition = 'width 5s linear';
+            heroIndicatorBar.style.width = '100%';
+        }, 50);
     }
 }
 
 // Update the content every 5 seconds
-setInterval(updateHeroContent, 5000);
+if (heroTitleEl) {
+    setInterval(updateHeroContent, 5000);
+}
 
 // Initialize the hero content on page load
-document.addEventListener('DOMContentLoaded', updateHeroContent);
+document.addEventListener('DOMContentLoaded', () => {
+    if (heroTitleEl) {
+        updateHeroContent();
+    }
+});
 
 // Logic for the sticky navbar
-const nav = document.getElementById('navbar');
 if (nav) {
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
